@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -6,8 +7,8 @@ import re
 from typing import Optional, Tuple, List
 
 from data_loader import load_excel_all_sheets, build_docs_from_df
-from storage_utils import load_embeddings, save_embeddings, get_file_mtime, clear_storage
 from rag_core import embed_text, retrieve, ask_gemini, set_api_key
+from storage_utils import load_embeddings, save_embeddings, get_file_mtime, clear_storage
 
 # variabel global
 EXCEL_PATH = Path("data/KitabAudioFernanda.xlsx")
@@ -48,36 +49,24 @@ def extract_price_range(query: str) -> Tuple[Optional[int], Optional[int]]:
 # sidebar
 with st.sidebar:
     st.header("⚙️ Pengaturan")
-
-    # ambil api key yang sudah pernah disimpan di session
-    current_key = st.session_state.get("GOOGLE_API_KEY", "")
-    api_input = st.text_input("Google API Key", value=current_key, type="password")
+    api_default = st.session_state.get("GOOGLE_API_KEY", "")
+    api_input = st.text_input("Google API Key", value=api_default, type="password")
 
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Simpan key"):
-            api_input = api_input.strip()
-            if api_input:
-                try:
-                    set_api_key(api_input)  # update ke rag_core
-                    st.session_state["GOOGLE_API_KEY"] = api_input
-                    st.success("API key disimpan.")
-                except Exception as e:
-                    st.error(f"Gagal set API key: {e}")
-            else:
-                st.warning("Isi dulu API key-nya.")
-
+            try:
+                set_api_key(api_input)
+                st.session_state["GOOGLE_API_KEY"] = api_input
+                st.success("API key disimpan.")
+            except Exception as e:
+                st.error(str(e))
     with col2:
         if st.button("🔄 Reset semua"):
-            # hapus embedding yang tersimpan
-            clear_storage(str(STORAGE_DIR))
-            # hapus chat & cache
+            clear_storage("storage")
             st.session_state.clear()
             st.cache_data.clear()
             st.rerun()
-
-    st.markdown("---")
-    st.caption("Jika di .env belum ada API key, isi API key dulu sebelum mulai chat.")
 
 # load data dan build docs
 @st.cache_data
