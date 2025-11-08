@@ -1,0 +1,3 @@
+models:
+  embedding: "gemini-embedding-exp-03-07"
+  chat: "gemini-2.5-flash"
