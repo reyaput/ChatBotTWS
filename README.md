@@ -30,11 +30,7 @@ conda activate chatbotTWS
 # 3. install dependency
 pip install -r requirements.txt
 
-# 4. (opsional) set API key lewat file .env
-# bikin file .env di root proyek, isi:
-# GOOGLE_API_KEY=YOUR_KEY_HERE
-
-# 5. jalankan streamlit
+# 4. jalankan streamlit
 streamlit run app.py
 ```
 
@@ -55,11 +51,7 @@ source .venv/bin/activate
 # 3. install dependency
 pip install -r requirements.txt
 
-# 4. (opsional) set API key lewat file .env
-# bikin file .env di root proyek, isi:
-# GOOGLE_API_KEY=YOUR_KEY_HERE
-
-# 5. jalanin
+# 4. jalanin
 streamlit run app.py
 ```
 
@@ -69,6 +61,6 @@ streamlit run app.py
 - data_loader.py: Read Data 
 - storage_utils.py: Simpan embedding 
 - config.yaml (opsional): Konfigurasi model Gemini yang dipakai 
-- req.txt: Daftar dependensi Python yang diperlukan 
+- requirements.txt: Daftar dependensi Python yang diperlukan 
 - data/: Folder tempat file Excel 
 - storage/: Folder untuk menyimpan embedding dan metadata
